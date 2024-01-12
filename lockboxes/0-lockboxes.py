@@ -1,7 +1,7 @@
 #!/usr/bin/python3
-""" Lockboxes """
+"""Lockboxes"""
 def canUnlockAll(boxes):
-    """ Method that determines if all boxes can be opened """
+    """Method that determines if all boxes can be opened"""
 
     for key in range(1, len(boxes)):
         flag = False
