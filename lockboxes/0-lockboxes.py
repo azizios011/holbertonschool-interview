@@ -1,24 +1,9 @@
 #!/usr/bin/python3
-
-
-"""
-Module for the canUnlockAll function
-"""
+""" define a method named 'def canUnlockAll(boxes)'. """
 
 
 def canUnlockAll(boxes):
-
-
-    """
-    Determines if all the boxes can be opened.
-
-    Args:
-    - boxes: A list of lists where each box contains keys to other boxes.
-
-    Returns:
-    - True if all boxes can be opened, else False.
-    """
-
+    """ a method that determines if all the boxes can be opened. """
 
     for key in range(1, len(boxes)):
         flag = False
