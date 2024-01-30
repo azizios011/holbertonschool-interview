@@ -1,5 +1,5 @@
 #!/usr/bin/python3
-""" define a method named 'def canUnlockAll(boxes)'. """
+"""define a method named 'canUnlockAll(boxes)'."""
 
 
 def canUnlockAll(boxes):
@@ -11,7 +11,7 @@ def canUnlockAll(boxes):
             if key in boxes[box] and box != key:
                 flag = True
                 break
-        if not flag:
+        if not flag:        
             return False
 
     return True
