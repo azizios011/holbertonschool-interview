@@ -1,8 +1,10 @@
 #!/usr/bin/python3
 
+
 """
 Module for the canUnlockAll function
 """
+
 
 def canUnlockAll(boxes):
     """
