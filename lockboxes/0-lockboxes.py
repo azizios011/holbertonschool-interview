@@ -7,6 +7,8 @@ Module for the canUnlockAll function
 
 
 def canUnlockAll(boxes):
+
+
     """
     Determines if all the boxes can be opened.
 
@@ -16,6 +18,8 @@ def canUnlockAll(boxes):
     Returns:
     - True if all boxes can be opened, else False.
     """
+
+
     for key in range(1, len(boxes)):
         flag = False
         for box in range(len(boxes)):
