@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """define a method named 'canUnlockAll(boxes)'."""
 
+
 def canUnlockAll(boxes):
     """a method that determines if all the boxes can be opened."""
 
@@ -10,7 +11,7 @@ def canUnlockAll(boxes):
             if key in boxes[box] and box != key:
                 flag = True
                 break
-        if not flag:        
+        if not flag:
             return False
 
     return True
