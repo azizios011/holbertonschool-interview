@@ -9,40 +9,37 @@
 
 heap_t *heap_insert(heap_t **root, int value)
 {
-	heap_t *new_node = binary_tree_node(NULL, value);
-	heap_t *parent = NULL;
-	heap_t *current = *root;
+    heap_t *new_node = binary_tree_node(NULL, value);
+    heap_t *parent = NULL;
+    heap_t *current = *root;
 
-	if (!new_node)
-	{
-		return (NULL);
-	}
+    if (!new_node)
+        return (NULL);
 
-	if (!*root)
-	{
-		return (*root = new_node);
-	}
+    if (!*root)
+        return (*root = new_node);
 
-	while (current)
-	{
-		parent = current;
+    while (current)
+    {
+        parent = current;
 
-		if (value > current->n)
-			current = current->right;
-		else
-			current = current->left;
-	}
+        if (value > current->n)
+            current = current->right;
+        else
+            current = current->left;
+    }
 
-	new_node->parent = parent;
-	if (value > parent->n)
-		parent->right = new_node;
-	else
-		parent->left = new_node;
+    new_node->parent = parent;
+    if (value > parent->n)
+        parent->right = new_node;
+    else
+        parent->left = new_node;
 
-	heapify(new_node);
+    heapify(new_node);
 
-	return (new_node);
+    return (new_node);
 }
+
 
 /**
  * heapify - Fixes the Max Heap property after insertion.
