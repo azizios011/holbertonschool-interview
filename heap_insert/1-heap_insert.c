@@ -40,6 +40,7 @@ void heapify(heap_t *node)
 heap_t *find_insert_position(heap_t *root)
 {
     heap_t *node;
+    int path;
     int leftmost = 0, rightmost = 0;
     int mask = 1;
 
@@ -53,7 +54,7 @@ heap_t *find_insert_position(heap_t *root)
     for (node = root; node; node = node->right)
         rightmost |= mask, mask <<= 1;
 
-    for (int path = (leftmost + 1) >> 1; path > 1; path >>= 1)
+    for (path = (leftmost + 1) >> 1; path > 1; path >>= 1)
         root = (path & 1) ? root->right : root->left;
 
     return (root);
