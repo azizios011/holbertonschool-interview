@@ -45,16 +45,13 @@ heap_t *find_insert_position(heap_t *root)
     if (!root)
         return (NULL);
 
-    // Find the rightmost node in the last level
     for (heap_t *node = root; node; node = node->left)
         leftmost |= mask, mask <<= 1;
 
-    // Reset mask and find the leftmost node in the last level
     mask = 1;
     for (heap_t *node = root; node; node = node->right)
         rightmost |= mask, mask <<= 1;
 
-    // Find the parent for the new node
     for (int path = (leftmost + 1) >> 1; path > 1; path >>= 1)
         root = (path & 1) ? root->right : root->left;
 
@@ -79,12 +76,10 @@ heap_t *insert_value(heap_t **root, int value)
     if (!node)
         return (NULL);
 
-    // If the parent is NULL, this is the first node in the heap
     if (!parent)
         *root = node;
     else
     {
-        // Insert as the left or right child depending on the heap shape
         if (!parent->left)
             parent->left = node;
         else
