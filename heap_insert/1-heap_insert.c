@@ -39,17 +39,18 @@ void heapify(heap_t *node)
  */
 heap_t *find_insert_position(heap_t *root)
 {
+    heap_t *node;
     int leftmost = 0, rightmost = 0;
     int mask = 1;
 
     if (!root)
         return (NULL);
 
-    for (heap_t *node = root; node; node = node->left)
+    for (node = root; node; node = node->left)
         leftmost |= mask, mask <<= 1;
 
     mask = 1;
-    for (heap_t *node = root; node; node = node->right)
+    for (node = root; node; node = node->right)
         rightmost |= mask, mask <<= 1;
 
     for (int path = (leftmost + 1) >> 1; path > 1; path >>= 1)
