@@ -1,71 +1,111 @@
 #include "binary_trees.h"
 
 /**
- * heap_insert - a function that inserts a value into a Max Binary Heap.
- * @root: is a double pointer to the root node of the Heap.
- * @value: is the value to store in the node to be inserted.
- * Return: a pointer to the inserted node, or 'NULL' on failure.
-*/
-
-heap_t *heap_insert(heap_t **root, int value)
-{
-    heap_t *new_node = binary_tree_node(NULL, value);
-    heap_t *parent = NULL;
-    heap_t *current = *root;
-
-    if (!new_node)
-        return (NULL);
-
-    if (!*root)
-        return (*root = new_node);
-
-    while (current)
-    {
-        parent = current;
-
-        if (value > current->n)
-            current = current->right;
-        else
-            current = current->left;
-    }
-
-    new_node->parent = parent;
-    if (value > parent->n)
-        parent->right = new_node;
-    else
-        parent->left = new_node;
-
-    heapify(new_node);
-
-    return (new_node);
-}
-
-
-/**
- * heapify - Fixes the Max Heap property after insertion.
- * @node: Node to start heapifying from.
- * Return: the heapifying node.
-*/
-
-void heapify(heap_t *node)
-{
-	while (node->parent && node->n > node->parent->n)
-	{
-		swap_values(&node->n, &node->parent->n);
-		node = node->parent;
-	}
-}
-
-/**
- * swap_values - Swaps two integer values.
- * @a: Pointer to the first value.
- * @b: Pointer to the second value.
- * Return: Swap intrgers.
-*/
-
+ * swap_values - Swaps two integers
+ * @a: First integer
+ * @b: Second integer
+ */
 void swap_values(int *a, int *b)
 {
-	int temp = *a;
-	*a = *b;
-	*b = temp;
+    int tmp = *a;
+    *a = *b;
+    *b = tmp;
+}
+
+/**
+ * heapify - Orders a binary tree node to respect max heap ordering
+ * @node: Node to order
+ */
+void heapify(heap_t *node)
+{
+    while (node->parent)
+    {
+        heap_t *parent = node->parent;
+        if (parent->n < node->n)
+        {
+            swap_values(&(parent->n), &(node->n));
+            node = parent;
+        }
+        node = parent;
+    }
+}
+
+#include "binary_trees.h"
+
+/**
+ * find_insert_position - Finds the position to insert a new value in the heap
+ * @root: Double pointer to the root node of the Heap
+ * Return: Pointer to the parent node where the new node should be inserted
+ */
+heap_t *find_insert_position(heap_t *root)
+{
+    int leftmost = 0, rightmost = 0;
+    int mask = 1;
+
+    if (!root)
+        return (NULL);
+
+    // Find the rightmost node in the last level
+    for (heap_t *node = root; node; node = node->left)
+        leftmost |= mask, mask <<= 1;
+
+    // Reset mask and find the leftmost node in the last level
+    mask = 1;
+    for (heap_t *node = root; node; node = node->right)
+        rightmost |= mask, mask <<= 1;
+
+    // Find the parent for the new node
+    for (int path = (leftmost + 1) >> 1; path > 1; path >>= 1)
+        root = (path & 1) ? root->right : root->left;
+
+    return (root);
+}
+
+/**
+ * insert_value - Inserts a value into a Max Binary Heap
+ * @root: Double pointer to the root node of the Heap
+ * @value: The value to store in the node to be inserted
+ * Return: Pointer to the inserted node, or NULL on failure
+ */
+heap_t *insert_value(heap_t **root, int value)
+{
+    heap_t *parent, *node;
+
+    if (!root)
+        return (NULL);
+
+    parent = find_insert_position(*root);
+    node = binary_tree_node(parent, value);
+    if (!node)
+        return (NULL);
+
+    // If the parent is NULL, this is the first node in the heap
+    if (!parent)
+        *root = node;
+    else
+    {
+        // Insert as the left or right child depending on the heap shape
+        if (!parent->left)
+            parent->left = node;
+        else
+            parent->right = node;
+    }
+
+    return (node);
+}
+
+/**
+ * heap_insert - Inserts a value into a Max Binary Heap
+ * @root: Double pointer to the root node of the Heap
+ * @value: The value to store in the node to be inserted
+ * Return: Pointer to the inserted node, or NULL on failure
+ */
+heap_t *heap_insert(heap_t **root, int value)
+{
+    heap_t *node = insert_value(root, value);
+    if (!node)
+        return (NULL);
+
+    heapify(node);
+    return (node);
 }
