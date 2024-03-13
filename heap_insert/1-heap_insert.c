@@ -18,10 +18,25 @@ void swap_values(int *a, int *b)
  */
 void heapify(heap_t *node)
 {
+    heap_t *largest;
+
     while (node->parent && node->n > node->parent->n)
     {
-        swap_values(&(node->n), &(node->parent->n));
-        node = node->parent;
+        largest = node;
+        if (node->left && node->left->n > largest->n)
+            largest = node->left;
+        if (node->right && node->right->n > largest->n)
+            largest = node->right;
+
+        if (largest != node)
+        {
+            swap_values(&(node->n), &(largest->n));
+            node = largest;
+        }
+        else
+        {
+            break;
+        }
     }
 }
 
