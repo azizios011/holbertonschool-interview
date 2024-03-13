@@ -18,15 +18,10 @@ void swap_values(int *a, int *b)
  */
 void heapify(heap_t *node)
 {
-    while (node->parent)
+    while (node->parent && node->n > node->parent->n)
     {
-        heap_t *parent = node->parent;
-        if (parent->n < node->n)
-        {
-            swap_values(&(parent->n), &(node->n));
-            node = parent;
-        }
-        node = parent;
+        swap_values(&(node->n), &(node->parent->n));
+        node = node->parent;
     }
 }
 
