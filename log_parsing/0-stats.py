@@ -4,6 +4,8 @@ import sys
 import re
 from collections import defaultdict
 
+"""Regular expression pattern to match the log format"""
+
 LOG_PATTERN = re.compile(
     r'^(\d+\.\d+\.\d+\.\d+) '
     r'\[(.*?)\] "GET /projects/260 HTTP/1\.1" '
