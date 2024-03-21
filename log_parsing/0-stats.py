@@ -12,12 +12,15 @@ LOG_PATTERN = re.compile(
 
 
 def print_statistics(total_size, status_counts):
+    """Function to print statistics"""
     print(f"File size: {total_size}")
     for status_code in sorted(status_counts.keys()):
         print(f"{status_code}: {status_counts[status_code]}")
 
 
 def main():
+    """Extract information from the log line and
+    Print statistics after every 10 lines"""
     total_size = 0
     status_counts = defaultdict(int)
     line_count = 0
