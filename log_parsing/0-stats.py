@@ -5,7 +5,9 @@ import sys
 import re
 from collections import defaultdict
 
-"""Regular expression pattern to match the log format"""
+
+""" Regular expression pattern to match the log format """
+
 LOG_PATTERN = re.compile(
     r'^(\d+\.\d+\.\d+\.\d+) '
     r'\[(.*?)\] "GET /projects/260 HTTP/1\.1" '
@@ -14,7 +16,9 @@ LOG_PATTERN = re.compile(
 
 
 def print_statistics(total_size, status_counts):
+
     """Function to print statistics"""
+
     print(f"File size: {total_size}")
     for status_code in sorted(status_counts.keys()):
         print(f"{status_code}: {status_counts[status_code]}")
