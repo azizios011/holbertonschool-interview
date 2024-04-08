@@ -1,5 +1,10 @@
 #!/usr/bin/python3
 
+"""
+This module contains a script that reads stdin line by line and computes metrics based on the input format.
+After every 10 lines and/or a keyboard interruption (CTRL + C), it prints statistics from the beginning.
+"""
+
 import sys
 import signal
 
@@ -10,11 +15,18 @@ line_count = 0
 
 
 def signal_handler(sig, frame):
+    """
+    Signal handler for SIGINT (CTRL + C).
+    Prints statistics and exits gracefully.
+    """
     print_statistics()
     sys.exit(0)
 
 
 def print_statistics():
+    """
+    Prints the computed statistics.
+    """
     global file_sizes, status_codes
     total_size = sum(file_sizes)
     print(f"File size: {total_size}")
@@ -24,6 +36,9 @@ def print_statistics():
 
 
 def parse_line(line):
+    """
+    Parses each line of input, extracts information, and updates metrics accordingly.
+    """
     global file_sizes, status_codes, line_count
     parts = line.split()
     if len(parts) != 7:
@@ -38,6 +53,9 @@ def parse_line(line):
 
 
 def main():
+    """
+    Main function. Sets up signal handler and reads input lines from stdin.
+    """
     signal.signal(signal.SIGINT, signal_handler)
     for line in sys.stdin:
         parse_line(line.strip())
