@@ -1,58 +1,46 @@
 #!/usr/bin/python3
-"""
-This script reads lines from stdin, matches them with
-a specific log format, and computes metrics.
-"""
 
 import sys
-import re
-from collections import defaultdict
+import signal
 
-# Regular expression pattern to match the log format
-LOG_PATTERN = re.compile(
-    r'^(\d+\.\d+\.\d+\.\d+) '
-    r'\[(.*?)\] "GET /projects/260 HTTP/1\.1" '
-    r'(\d+) (\d+)$'
-)
+# Global variables to store metrics
+file_sizes = []
+status_codes = {200: 0, 301: 0, 400: 0, 401: 0, 403: 0, 404: 0, 405: 0, 500: 0}
+line_count = 0
 
 
-def print_statistics(total_size, status_counts):
-    """
-    Function to print statistics.
-    Args:
-        total_size (int): Total file size.
-        status_counts (dict): Dictionary containing status code counts.
-    """
+def signal_handler(sig, frame):
+    print_statistics()
+    sys.exit(0)
+
+
+def print_statistics():
+    global file_sizes, status_codes
+    total_size = sum(file_sizes)
     print(f"File size: {total_size}")
-    for status_code in sorted(status_counts.keys()):
-        print(f"{status_code}: {status_counts[status_code]}")
+    for code, count in sorted(status_codes.items()):
+        if count > 0:
+            print(f"{code}: {count}")
+
+
+def parse_line(line):
+    global file_sizes, status_codes, line_count
+    parts = line.split()
+    if len(parts) != 7:
+        return
+    status_code = int(parts[-2])
+    if status_code in status_codes:
+        status_codes[status_code] += 1
+        file_sizes.append(int(parts[-1]))
+    line_count += 1
+    if line_count % 10 == 0:
+        print_statistics()
 
 
 def main():
-    """
-    Extract information from the log line and
-    print statistics after every 10 lines.
-    """
-    total_size = 0
-    status_counts = defaultdict(int)
-    line_count = 0
-
-    try:
-        for line in sys.stdin:
-            match = re.match(LOG_PATTERN, line.strip())
-            if match:
-                ip_address, _, status_code, file_size = match.groups()
-                total_size += int(file_size)
-                status_counts[status_code] += 1
-                line_count += 1
-
-                if line_count % 10 == 0:
-                    print_statistics(total_size, status_counts)
-
-    except KeyboardInterrupt:
-        pass
-
-    print_statistics(total_size, status_counts)
+    signal.signal(signal.SIGINT, signal_handler)
+    for line in sys.stdin:
+        parse_line(line.strip())
 
 
 if __name__ == "__main__":
