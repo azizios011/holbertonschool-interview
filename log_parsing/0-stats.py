@@ -1,7 +1,7 @@
 #!/usr/bin/python3
 """
-Module: 0-stats
-Script that reads stdin line by line and computes metrics.
+Script: 0-stats.py
+Reads stdin line by line and computes metrics.
 """
 
 import sys
@@ -19,9 +19,8 @@ def parse_line(line):
         tuple: A tuple containing IP address, status code, and file size.
                Returns None if the line format is incorrect.
     """
-    # Split the line into components
     parts = line.split()
-    if len(parts) < 10:
+    if len(parts) != 10:
         return None
     ip_address = parts[0]
     status_code = parts[-2]
