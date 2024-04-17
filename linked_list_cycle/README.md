@@ -1,11 +1,11 @@
 
 ---
 
-## Floyd's Cycle Detection Algorithm for Linked Lists
+## Cycle Detection Algorithm for Linked Lists
 
 ### Overview
 
-Floyd's Cycle Detection Algorithm, also known as the "tortoise and hare" algorithm, is a method used to detect cycles in a linked list. It works by traversing the list with two pointers, one moving at a slower pace than the other. If there's a cycle in the list, eventually the faster pointer will catch up with the slower one.
+The Cycle Detection Algorithm is a method used to detect cycles in a linked list. It works by traversing the list with two pointers, one moving at a slower pace than the other. If there's a cycle in the list, eventually the faster pointer will catch up with the slower one.
 
 ### Algorithm Steps
 
