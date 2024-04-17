@@ -14,14 +14,13 @@ int check_cycle(listint_t *list)
 
     while (slow_ptr && fast_ptr && fast_ptr->next)
     {
-        slow_ptr = slow_ptr->next;          // Move slow pointer by one step
-        fast_ptr = fast_ptr->next->next;    // Move fast pointer by two steps
+        slow_ptr = slow_ptr->next;
+        fast_ptr = fast_ptr->next->next;
 
-        // If the pointers meet, there is a cycle
+
         if (slow_ptr == fast_ptr)
             return 1;
     }
 
-    // If we reach here, there is no cycle
     return 0;
 }
