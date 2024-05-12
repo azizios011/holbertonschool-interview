@@ -1,60 +1,53 @@
 #!/usr/bin/python3
 """
-a program that solves the N queens problem.
+This program solves the N queens problem, which involves placing N non-attacking queens on an N×N chessboard.
 """
+
 import sys
 
 
-"""
-a method that solves the N queens problem and
-returns the result of the solution.
-"""
-
-
-def nqueens():
-    if len(sys.argv) != 2:
-        print("Usage: nqueens.py <number of queens>")
+def nqueens(N):
+    """
+    Solves the N queens problem and prints the solutions.
+    """
+    if not N.isdigit():
+        print("N must be a number", file=sys.stderr)
         sys.exit(1)
-    try:
-        n = int(sys.argv[1])
-    except ValueError:
-        print("<number of queens> must be a positive integer")
+    
+    N = int(N)
+    if N < 4:
+        print("N must be at least 4", file=sys.stderr)
         sys.exit(1)
-    if n < 1:
-        print("<number of queens> must be a positive integer")
+    
+    board = [[0 for _ in range(N)] for _ in range(N)]
+    solutions = []
+    solve(board, 0, solutions)
+    if not solutions:
+        print("No solution", file=sys.stderr)
         sys.exit(1)
-    board = []
-    for i in range(n):
-        board.append([0] * n)
-    if not solve(board, 0):
-        print("No solution")
+    else:
+        for solution in solutions:
+            print(solution, file=sys.stderr)
 
+    sys.exit(0)
 
-"""
-A method to give a solution to put
-a the queens away from each other sigth.
-"""
-
-
-def solve(board, col):
+def solve(board, col, solutions):
+    """
+    Recursively finds solutions to the N queens problem.
+    """
     if col >= len(board):
-        return True
+        solutions.append([[i, j] for i, row in enumerate(board) for j, val in enumerate(row) if val == 1])
+        return
     for row in range(len(board)):
         if is_safe(board, row, col):
             board[row][col] = 1
-            if solve(board, col + 1):
-                return True
+            solve(board, col + 1, solutions)
             board[row][col] = 0
-    return False
-
-
-"""
-a Method to check whether the given there's no
-queen in the board by checking the row and col.
-"""
-
 
 def is_safe(board, row, col):
+    """
+    Checks whether it's safe to place a queen at the given position.
+    """
     for i in range(col):
         if board[row][i] == 1:
             return False
@@ -66,6 +59,3 @@ def is_safe(board, row, col):
             return False
     return True
 
-
-if __name__ == "__main__":
-    nqueens()
