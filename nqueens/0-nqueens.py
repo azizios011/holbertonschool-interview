@@ -25,11 +25,11 @@ def nqueens(N):
     solutions = []
     solve(board, 0, solutions)
     if not solutions:
-        print("No solution", file=sys.stderr)
+        print("No solution")
         sys.exit(1)
     else:
         for solution in solutions:
-            print(solution, file=sys.stderr)
+            print(solution)
 
     sys.exit(0)
 
