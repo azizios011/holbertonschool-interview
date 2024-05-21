@@ -13,12 +13,12 @@ def nqueens(N):
     Solves the N queens problem and prints the solutions.
     """
     if not N.isdigit():
-        print("N must be a number", file=sys.stderr)
+        print("N must be a number")
         sys.exit(1)
 
     N = int(N)
     if N < 4:
-        print("N must be at least 4", file=sys.stderr)
+        print("N must be at least 4")
         sys.exit(1)
 
     board = [[0 for _ in range(N)] for _ in range(N)]
