@@ -64,10 +64,9 @@ def is_safe(board, row, col):
             return False
     return True
 
-
 if __name__ == "__main__":
     if len(sys.argv) != 2:
-        print("Usage: nqueens.py N")
+        print("Usage: nqueens N")
         sys.exit(1)
 
     nqueens(sys.argv[1])
