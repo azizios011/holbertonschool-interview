@@ -9,25 +9,27 @@
  */
 avl_t *sorted_array_to_avl_helper(int *array, int start, int end)
 {
-    if (start > end)
-        return NULL;
+	avl_t *root = malloc(sizeof(avl_t));
+	int mid;
 
-    int mid = (start + end) / 2;
-    avl_t *root = malloc(sizeof(avl_t));
-    if (!root)
-        return NULL;
+	if (start > end)
+		return (NULL);
 
-    root->n = array[mid];
-    root->left = sorted_array_to_avl_helper(array, start, mid - 1);
-    root->right = sorted_array_to_avl_helper(array, mid + 1, end);
-    root->parent = NULL;
+	mid = (start + end) / 2;
+	if (!root)
+		return (NULL);
 
-    if (root->left)
-        root->left->parent = root;
-    if (root->right)
-        root->right->parent = root;
+	root->n = array[mid];
+	root->left = sorted_array_to_avl_helper(array, start, mid - 1);
+	root->right = sorted_array_to_avl_helper(array, mid + 1, end);
+	root->parent = NULL;
 
-    return root;
+	if (root->left)
+		root->left->parent = root;
+	if (root->right)
+		root->right->parent = root;
+
+	return (root);
 }
 
 /**
@@ -38,7 +40,7 @@ avl_t *sorted_array_to_avl_helper(int *array, int start, int end)
  */
 avl_t *sorted_array_to_avl(int *array, size_t size)
 {
-    if (!array || size == 0)
-        return NULL;
-    return sorted_array_to_avl_helper(array, 0, size - 1);
+	if (!array || size == 0)
+		return (NULL);
+	return (sorted_array_to_avl_helper(array, 0, size - 1));
 }
