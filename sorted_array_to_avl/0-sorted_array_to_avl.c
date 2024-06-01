@@ -30,6 +30,7 @@ avl_t *sorted_array_to_avl_helper(int *array, int start, int end)
 		root->right->parent = root;
 
 	return (root);
+	free_tree(root);
 }
 
 /**
@@ -43,4 +44,23 @@ avl_t *sorted_array_to_avl(int *array, size_t size)
 	if (!array || size == 0)
 		return (NULL);
 	return (sorted_array_to_avl_helper(array, 0, size - 1));
+}
+
+/**
+ * free_tree - Frees the memory allocated for an AVL tree
+ * @root: Pointer to the root node of the AVL tree
+ *
+ * This function recursively traverses the AVL tree rooted at 'root' and
+ * frees the memory allocated for each node. It uses a post-order traversal
+ * to ensure that child nodes are freed before their parent node.
+ */
+void free_tree(avl_t *root)
+{
+	if (root == NULL)
+	{
+		return;
+	}
+	free_tree(root->left);
+	free_tree(root->right);
+	free(root);
 }
