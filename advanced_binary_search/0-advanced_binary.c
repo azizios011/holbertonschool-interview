@@ -9,7 +9,8 @@
  * Returns: the index where value is located,
  * or -1 if value is not present in array or if array is NULL.
 */
-int advanced_binary(int *array, size_t size, int value) {
+int advanced_binary(int *array, size_t size, int value)
+{
     if (array == NULL || size == 0) {
         return -1;
     }
@@ -27,13 +28,15 @@ int advanced_binary(int *array, size_t size, int value) {
  */
 int binary_search_recursive(int *array, size_t left, size_t right, int value)
 {
+	size_t mid;
+
     if (left > right) {
         return -1;
     }
     
     print_array(array, left, right);
     
-    size_t mid = left + (right - left) / 2;
+    mid = left + (right - left) / 2;
 
     if (array[mid] == value) {
         if (mid == left || array[mid - 1] != value) {
@@ -59,8 +62,10 @@ int binary_search_recursive(int *array, size_t left, size_t right, int value)
  */
 void print_array(int *array, size_t left, size_t right)
 {
+	size_t i;
+
     printf("Searching in array: ");
-    for (size_t i = left; i <= right; i++) {
+    for ( i = left; i <= right; i++) {
         if (i > left)
             printf(", ");
         printf("%d", array[i]);
