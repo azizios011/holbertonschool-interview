@@ -1,6 +1,4 @@
 # Holberton School Interview Preparation
--------
-
 Welcome to the Holberton School Interview Preparation repository. This repository contains a collection of coding challenges and algorithms commonly used to prepare for technical interviews. Each directory focuses on a specific problem or data structure to help you practice and improve your coding skills.
 
 ## Table of Contents
