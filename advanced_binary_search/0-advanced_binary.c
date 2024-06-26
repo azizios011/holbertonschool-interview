@@ -7,9 +7,12 @@
  * @left: Left boundary of the array
  * @right: Right boundary of the array
  */
-void print_array(int *array, size_t left, size_t right) {
+void print_array(int *array, size_t left, size_t right)
+{
+    size_t i;
+
     printf("Searching in array: ");
-    for (size_t i = left; i <= right; i++) {
+    for (i = left; i <= right; i++) {
         printf("%d", array[i]);
         if (i < right) {
             printf(", ");
@@ -32,7 +35,6 @@ int advanced_binary_recursive(int *array, size_t left, size_t right, int value) 
         print_array(array, left, right);
         
         if (array[mid] == value) {
-            // Check if it is the first occurrence
             if (mid == left || array[mid - 1] != value) {
                 return mid;
             } else {
