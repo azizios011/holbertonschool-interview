@@ -72,3 +72,5 @@ listint_t *find_listint_loop(listint_t *head);
 
 #endif /* _LISTS_H_ */
 ```
+
+This README provides a detailed explanation of each line of code in the `0-find_loop.c` script, helping users understand how the script works.
