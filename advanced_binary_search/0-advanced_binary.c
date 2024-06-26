@@ -35,6 +35,7 @@ int advanced_binary_recursive(int *array, size_t left, size_t right, int value) 
         print_array(array, left, right);
         
         if (array[mid] == value) {
+            // Check if it is the first occurrence
             if (mid == left || array[mid - 1] != value) {
                 return mid;
             } else {
