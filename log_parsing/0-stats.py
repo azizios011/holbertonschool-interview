@@ -2,6 +2,10 @@
 import sys
 import re
 
+
+"""
+ a script that reads stdin line by line and computes metrics.
+"""
 log_pattern = re.compile(r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.*?)\] "GET /projects/260 HTTP/1.1" (\d{3}) (\d+)')
 
 total_file_size = 0
