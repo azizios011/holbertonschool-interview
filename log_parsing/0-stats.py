@@ -1,78 +1,57 @@
-#!/usr/bin/python3
-"""
-Script: 0-stats.py
-Reads stdin line by line and computes metrics.
-"""
-
+#!/usr/bin/env python3
 import sys
-from collections import defaultdict
+import re
 
+# Regular expression to match the log line format
+log_pattern = re.compile(r'^(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}) - \[(.*?)\] "GET /projects/260 HTTP/1.1" (\d{3}) (\d+)')
 
-def parse_line(line):
-    """
-    Parse a log line to extract IP address, status code, and file size.
+# Initialize metrics variables
+total_file_size = 0
+status_code_counts = {
+    200: 0,
+    301: 0,
+    400: 0,
+    401: 0,
+    403: 0,
+    404: 0,
+    405: 0,
+    500: 0
+}
+line_count = 0
 
-    Args:
-        line (str): A log line in the specified format.
-
-    Returns:
-        tuple: A tuple containing IP address, status code, and file size.
-               Returns None if the line format is incorrect.
-    """
-    parts = line.split()
-    if len(parts) != 10:
-        return None
-    ip_address = parts[0]
-    status_code = parts[-2]
-    file_size = int(parts[-1])
-    return ip_address, status_code, file_size
-
-
-def print_statistics(total_size, status_counts):
-    """
-    Print accumulated statistics.
-
-    Args:
-        total_size (int): Total file size.
-        status_counts (dict): Dictionary containing status code counts.
-    """
-    print("File size:", total_size)
-    for status_code in sorted(status_counts.keys()):
-        print(status_code + ":", status_counts[status_code])
-
-
-def main():
-    """
-    Main function to process log lines from stdin and compute statistics.
-    """
-    total_size = 0
-    status_counts = defaultdict(int)
-    lines_processed = 0
-
-    try:
-        for line in sys.stdin:
-            # Parse each line
-            parsed = parse_line(line.strip())
-            if parsed is None:
-                continue
-
-            # Update total file size
-            total_size += parsed[2]
-
-            # Update status code counts
-            status_counts[parsed[1]] += 1
-
-            # Increment lines processed
-            lines_processed += 1
-
-            # Print statistics every 10 lines
-            if lines_processed % 10 == 0:
-                print_statistics(total_size, status_counts)
-    except KeyboardInterrupt:
-        # Handle keyboard interruption
-        print_statistics(total_size, status_counts)
-        sys.exit(0)
-
-
-if __name__ == "__main__":
-    main()
+try:
+    for line in sys.stdin:
+        line_count += 1
+        line = line.strip()
+        match = log_pattern.match(line)
+        
+        if not match:
+            continue
+        
+        ip_address, date, status_code_str, file_size_str = match.groups()
+        
+        try:
+            status_code = int(status_code_str)
+            file_size = int(file_size_str)
+        except ValueError:
+            continue
+        
+        total_file_size += file_size
+        
+        if status_code in status_code_counts:
+            status_code_counts[status_code] += 1
+        
+        # Print metrics after every 10 lines
+        if line_count % 10 == 0:
+            print(f"File size: {total_file_size}")
+            for code in sorted(status_code_counts):
+                if status_code_counts[code] > 0:
+                    print(f"{code}: {status_code_counts[code]}")
+            print()
+except KeyboardInterrupt:
+    # Handle keyboard interruption
+    print(f"File size: {total_file_size}")
+    for code in sorted(status_code_counts):
+        if status_code_counts[code] > 0:
+            print(f"{code}: {status_code_counts[code]}")
+    sys.exit(0)
