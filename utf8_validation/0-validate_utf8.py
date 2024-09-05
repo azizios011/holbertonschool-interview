@@ -18,6 +18,9 @@ def validUTF8(data):
     num_bytes = 0
 
     for num in data:
+        if num > 255:
+            return False
+
         if num_bytes == 0:
             if num >> 7 == 0b0:
                 continue
