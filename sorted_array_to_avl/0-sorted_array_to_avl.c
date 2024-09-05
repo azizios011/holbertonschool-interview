@@ -1,66 +1,62 @@
 #include "binary_trees.h"
+#include <stdlib.h>
 
 /**
- * sorted_array_to_avl_helper - Builds an AVL tree from a sorted array
- * @array: Pointer to the first element of the array to be converted
- * @start: Starting index of the array
- * @end: Ending index of the array
- * Return: Pointer to the root node of the created AVL tree, or NULL on failure
+ * create_avl_node - Creates a new AVL node
+ * @parent: Pointer to the parent node
+ * @value: Value to be stored in the new node
+ * Return: Pointer to the new node, or NULL on failure
  */
-avl_t *sorted_array_to_avl_helper(int *array, int start, int end)
+avl_t *create_avl_node(avl_t *parent, int value)
 {
-	avl_t *root = malloc(sizeof(avl_t));
-	int mid;
+    avl_t *new_node = malloc(sizeof(avl_t));
 
-	if (start > end)
-		return (NULL);
+    if (!new_node)
+        return (NULL);
 
-	mid = (start + end) / 2;
-	if (!root)
-		return (NULL);
+    new_node->n = value;
+    new_node->parent = parent;
+    new_node->left = NULL;
+    new_node->right = NULL;
 
-	root->n = array[mid];
-	root->left = sorted_array_to_avl_helper(array, start, mid - 1);
-	root->right = sorted_array_to_avl_helper(array, mid + 1, end);
-	root->parent = NULL;
+    return (new_node);
+}
 
-	if (root->left)
-		root->left->parent = root;
-	if (root->right)
-		root->right->parent = root;
+/**
+ * build_avl_tree - Recursively builds an AVL tree from a sorted array
+ * @array: Pointer to the first element of the sorted array
+ * @start: Start index of the array
+ * @end: End index of the array
+ * @parent: Pointer to the parent node of the current subtree
+ * Return: Pointer to the root of the created subtree, or NULL on failure
+ */
+avl_t *build_avl_tree(int *array, int start, int end, avl_t *parent)
+{
+    if (start > end)
+        return (NULL);
 
-	return (root);
-	free_tree(root);
+    int mid = (start + end) / 2;
+    avl_t *root = create_avl_node(parent, array[mid]);
+
+    if (!root)
+        return (NULL);
+
+    root->left = build_avl_tree(array, start, mid - 1, root);
+    root->right = build_avl_tree(array, mid + 1, end, root);
+
+    return (root);
 }
 
 /**
  * sorted_array_to_avl - Builds an AVL tree from a sorted array
  * @array: Pointer to the first element of the array to be converted
- * @size: Number of elements in the array
+ * @size: Size of the array
  * Return: Pointer to the root node of the created AVL tree, or NULL on failure
  */
 avl_t *sorted_array_to_avl(int *array, size_t size)
 {
-	if (!array || size == 0)
-		return (NULL);
-	return (sorted_array_to_avl_helper(array, 0, size - 1));
-}
+    if (!array || size == 0)
+        return (NULL);
 
-/**
- * free_tree - Frees the memory allocated for an AVL tree
- * @root: Pointer to the root node of the AVL tree
- *
- * This function recursively traverses the AVL tree rooted at 'root' and
- * frees the memory allocated for each node. It uses a post-order traversal
- * to ensure that child nodes are freed before their parent node.
- */
-void free_tree(avl_t *root)
-{
-	if (root == NULL)
-	{
-		return;
-	}
-	free_tree(root->left);
-	free_tree(root->right);
-	free(root);
+    return (build_avl_tree(array, 0, size - 1, NULL));
 }
