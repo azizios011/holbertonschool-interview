@@ -1,6 +1,5 @@
 #!/usr/bin/python3
 
-
 def sieve_of_eratosthenes(max_n):
     """
     Generates a list of primes up to
