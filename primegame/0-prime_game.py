@@ -1,4 +1,8 @@
 #!/usr/bin/python3
+"""
+    This is the solution for the Prime Game.
+"""
+
 
 def sieve_of_eratosthenes(max_n):
     """
